@@ -1,0 +1,111 @@
+<div id="allin" style="position:absolute; top:0px; left:0px; margin:0px; padding:0px;"></div>
+
+
+<script>
+    (function () {
+
+        var DEBUG = true;
+
+        function create_img(root, img_src, beforeWidth, beforeHeight, growBy, beforeTop, beforeLeft, _debug) {
+
+            var pxConvert = function (n) {
+                if (n) return n.toString() + "px";
+            }
+
+            var cx_o_dim = function (o, width, height, top, left, zIndex) {
+                
+                o.style.height = pxConvert(height);
+                o.style.width = pxConvert(width);
+                o.style.top = pxConvert(top);
+                o.style.left = pxConvert(left);
+                o.style.zIndex = zIndex.toString();
+
+                if (_debug) {
+                    console.log("cx_o_dim: o.style.height = " + o.style.height + ", o.style.width = " + o.style.width +", o.style.top = " + o.style.top + ", o.style.left = " + o.style.left);
+                    console.log("cx_o_dim: width = " + width + ", height = " + height + ", top = " + top + ", left = " + left);
+                }
+            } 
+
+            var allin = document.getElementById(root);
+            var img = document.createElement("img");
+
+            // may cx this to percentage instead of absolute
+            var afterWidth = beforeWidth + Math.abs(growBy),
+                afterHeight = beforeHeight + Math.abs(growBy),
+                afterLeft = beforeLeft - Math.abs(growBy / 2),
+                afterTop = beforeTop - Math.abs(growBy / 2),
+                beforeZIndex = 1,
+                afterZIndex = 2;
+
+
+            img.style.position = "absolute";
+            cx_o_dim(img, beforeWidth, beforeHeight, beforeTop, beforeLeft, beforeZIndex)
+
+            img.src = img_src;
+
+            if (_debug) {
+                console.log("main: afterWidth = " + afterWidth + ", afterHeight = " + afterHeight);
+                console.log("main afterLeft = " + afterLeft + ", afterTop = " + afterTop);
+            }
+
+            allin.appendChild(img);
+            //var self = this;
+
+            img.onmouseover = function () {
+                if (_debug) {
+                    console.log("mouse over on " + this.src);
+                }
+                cx_o_dim(img, afterWidth, afterHeight, afterTop, afterLeft, afterZIndex);
+            };
+            img.onmouseout = function () {
+                if (_debug) {
+                    console.log("mouse out on " + this.src);
+                }
+                cx_o_dim(img, beforeWidth, beforeHeight, beforeTop, beforeLeft, beforeZIndex);
+            };                    
+
+        }
+
+        
+
+        var _beforeSize = 200, _growBy = 40, _top = 22, _left = 22;
+
+        // should receive a JSON list of the pics to be displayed after we've worked out the screen size
+        // note if the screen gets bigger then we'll have to get more pics
+        var _screenWidth = window.outerWidth,
+            _screenHeight = window.outerHeight;
+
+        document.body.onresize = function (evt) {
+            _screenWidth = window.outerWidth;
+            _screenHeight = window.outerHeight;
+            if (DEBUG) {
+                console.log("resizes to width=" + window.outerWidth + " and height=" + window.outerHeight);
+            }
+        };
+
+
+        if (DEBUG) {
+            console.log("width=" + _screenWidth + " and height=" + _screenHeight);
+        }
+
+        var _pics = [{ "src": "/Resources/pic1.jpg", "caption": "pic1" },
+            { "src": "/Resources/pic2.jpg", "caption": "pic2" },
+            { "src": "/Resources/pic3.jpg", "caption": "pic3" },
+            { "src": "/Resources/pic4.jpg", "caption": "pic4" },
+            { "src": "/Resources/pic1.jpg", "caption": "pic1" },
+            { "src": "/Resources/pic2.jpg", "caption": "pic2" }]
+
+
+
+        for (var i = 0; i < _pics.length; i++) {
+            if (DEBUG) {
+                console.log("1st loop _top=" + _top + ", _left=" + _left + ", _pic[i].src=" + _pics[i].src);
+            }
+            create_img("allin", _pics[i].src, _beforeSize, _beforeSize, _growBy, _top, _left, false);
+            _left += _beforeSize;
+
+        }
+    })();
+
+
+</script>
