@@ -77,8 +77,8 @@
 
         
        
-        var
-            _beforeSize = 240, _growBy = 48, _top = 30, _left = 30, //px
+        var LEFT_START_POS = 30,
+            _beforeSize = 240, _growBy = 48, _top = 30, _left = LEFT_START_POS, //px
             //_beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
             _picsAcross = 4, _picsDown = 6; // thats 24 pics in total 
 
@@ -128,26 +128,32 @@
 
 
         function picPopulate() {
+            var picIndex = 0;
+            for (var j = 0; j < _picsDown; j++) {
 
-            for (var i = 0; i < _picsAcross; i++) {
-                if (i >= _pics.length) {
-                    console.warn("Ran out of images!");
-                    break;
+                for (var i = 0; i < _picsAcross; i++) {
+                    if (picIndex >= _pics.length) {
+                        console.warn("Ran out of images!");
+                        break;
+                    }
+
+                    if (DEBUG) {
+                        console.log("1st loop _top=" + _top + ", _left=" + _left + ", _pic[i].src=" + _pics[picIndex].src);
+                    }
+
+                    create_img("allin", _pics[picIndex].src, _beforeSize, _beforeSize, _growBy, _top, _left, pxConvert, false);
+                    _left += _beforeSize;
+                    picIndex += 1;
+
                 }
-
-                if (DEBUG) {
-                    console.log("1st loop _top=" + _top + ", _left=" + _left + ", _pic[i].src=" + _pics[i].src);
-                }
-               
-                create_img("allin", _pics[i].src, _beforeSize, _beforeSize, _growBy, _top, _left, pxConvert, false);
-                _left += _beforeSize;
-
+                _left = LEFT_START_POS;
+                _top += _beforeSize;
             }
         };
 
         function init() {
             document.getElementById("allin").innerHTML = "";
-            _beforeSize = 240, _growBy = 48, _top = 30, _left = 30;
+            _beforeSize = 240, _growBy = 48, _top = 30, _left = LEFT_START_POS;
 
             calcDims();
             picPopulate();
