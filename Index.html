@@ -89,7 +89,9 @@
             // then adjust the beforeSize to an actual division of the number of pics
             // NB remember to cater for a border and the left pic doesn't expand correctly if - 
             //     when expanded it's left and/or top becomes 0 (zero)
-            _picsAcross = parseInt(_screenWidth / _beforeSize);
+            _picsAcross = parseInt((_screenWidth-2*LEFT_START_POS) / _beforeSize);
+
+            _beforeSize = parseInt((_screenWidth - 2 * LEFT_START_POS) / _picsAcross);
 
             if (DEBUG) {
                 console.log("_picsAcross is " + _picsAcross);
@@ -104,7 +106,6 @@
                 console.log("resizes to width=" + window.outerWidth + " and height=" + window.outerHeight);
             }
             init();
-
         };
 
 
