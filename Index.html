@@ -10,6 +10,16 @@
 
         var DEBUG = true;
 
+        var _screenWidth = window.outerWidth,
+            _screenHeight = window.outerHeight;
+
+
+
+        var LEFT_START_POS = 30,
+            _beforeSize = 240, _growBy = 48, _top = 30, _left = LEFT_START_POS, //px
+            //_beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
+            _picsAcross = 4, _picsDown = 6; // thats 24 pics in total 
+
         // used for DI(ing) the dimension converter into create_img
         var emConvert = function (n) {
             if (n) return n.toString() + "em";
@@ -71,16 +81,7 @@
             };                    
 
         }
-
-        var _screenWidth = window.outerWidth,
-            _screenHeight = window.outerHeight;
-
         
-       
-        var LEFT_START_POS = 30,
-            _beforeSize = 240, _growBy = 48, _top = 30, _left = LEFT_START_POS, //px
-            //_beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
-            _picsAcross = 4, _picsDown = 6; // thats 24 pics in total 
 
        
         function calcDims() { // calculates the window dims
@@ -89,7 +90,7 @@
             // then adjust the beforeSize to an actual division of the number of pics
             // NB remember to cater for a border and the left pic doesn't expand correctly if - 
             //     when expanded it's left and/or top becomes 0 (zero)
-            _picsAcross = parseInt((_screenWidth-2*LEFT_START_POS) / _beforeSize);
+            _picsAcross = parseInt((_screenWidth-2 * LEFT_START_POS) / _beforeSize);
 
             _beforeSize = parseInt((_screenWidth - 2 * LEFT_START_POS) / _picsAcross);
 
@@ -108,13 +109,9 @@
             init();
         };
 
-
         if (DEBUG) {
             console.log("width=" + _screenWidth + " and height=" + _screenHeight);
         }
-
-
-
         
 
          // should receive a JSON list of the pics to be displayed after we've worked out the screen size
@@ -126,8 +123,7 @@
                     { "src": "/Resources/pic1.jpg", "caption": "pic1" },
                     { "src": "/Resources/pic2.jpg", "caption": "pic2" }];
 
-
-
+        
         function picPopulate() {
             var picIndex = 0;
             for (var j = 0; j < _picsDown; j++) {
@@ -161,9 +157,6 @@
         }
 
         init();
-        
-
-
 
     })();
 
