@@ -81,8 +81,6 @@
             };                    
 
         }
-        
-
        
         function calcDims() { // calculates the window dims
             // ideally would like to fit at least 4 pics across the window
@@ -90,7 +88,9 @@
             // then adjust the beforeSize to an actual division of the number of pics
             // NB remember to cater for a border and the left pic doesn't expand correctly if - 
             //     when expanded it's left and/or top becomes 0 (zero)
-            _picsAcross = parseInt((_screenWidth-2 * LEFT_START_POS) / _beforeSize);
+            _picsAcross = parseInt((_screenWidth - 2 * LEFT_START_POS) / _beforeSize);
+
+            if (_picsAcross === 0) _picsAcross = 1;
 
             _beforeSize = parseInt((_screenWidth - 2 * LEFT_START_POS) / _picsAcross);
 
@@ -111,8 +111,7 @@
 
         if (DEBUG) {
             console.log("width=" + _screenWidth + " and height=" + _screenHeight);
-        }
-        
+        }        
 
          // should receive a JSON list of the pics to be displayed after we've worked out the screen size
         // note if the screen gets bigger then we'll have to get more pics
@@ -122,7 +121,6 @@
                     { "src": "/Resources/pic4.jpg", "caption": "pic4" },
                     { "src": "/Resources/pic1.jpg", "caption": "pic1" },
                     { "src": "/Resources/pic2.jpg", "caption": "pic2" }];
-
         
         function picPopulate() {
             var picIndex = 0;
