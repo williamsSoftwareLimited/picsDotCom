@@ -4,9 +4,6 @@
 
 <div id="allin" style="position:absolute; top:0px; left:0px; margin:0px; padding:0px;"></div>
 
-<div>
-    <img src="~/Resources/pic1.jpg" class="magicPics" />
-</div>
 
 <script>
     (function () {
@@ -81,13 +78,22 @@
         
        
         var
-             //  _beforeSize = 200, _growBy = 40, _top = 22, _left = 22, //px
-            _beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
-            _picsAcross = 8, _picsDown = 6; // thats 24 pics in total 
+            _beforeSize = 240, _growBy = 48, _top = 30, _left = 30, //px
+            //_beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
+            _picsAcross = 4, _picsDown = 6; // thats 24 pics in total 
 
        
-        function calcDims(width, height, picWidth) { // these are the window dims
+        function calcDims() { // calculates the window dims
             // ideally would like to fit at least 4 pics across the window
+            // divide the screen size by the _beforeSize to get number of pics that can fit across
+            // then adjust the beforeSize to an actual division of the number of pics
+            // NB remember to cater for a border and the left pic doesn't expand correctly if - 
+            //     when expanded it's left and/or top becomes 0 (zero)
+            _picsAcross = parseInt(_screenWidth / _beforeSize);
+
+            if (DEBUG) {
+                console.log("_picsAcross is " + _picsAcross);
+            }
 
         }
 
@@ -97,6 +103,9 @@
             if (DEBUG) {
                 console.log("resizes to width=" + window.outerWidth + " and height=" + window.outerHeight);
             }
+            init();
+            calcDims();
+            picPopulate();
         };
 
 
@@ -104,25 +113,44 @@
             console.log("width=" + _screenWidth + " and height=" + _screenHeight);
         }
 
+
+
+        
+
          // should receive a JSON list of the pics to be displayed after we've worked out the screen size
         // note if the screen gets bigger then we'll have to get more pics
         var _pics = [{ "src": "/Resources/pic1.jpg", "caption": "pic1" },
-            { "src": "/Resources/pic2.jpg", "caption": "pic2" },
-            { "src": "/Resources/pic3.jpg", "caption": "pic3" },
-            { "src": "/Resources/pic4.jpg", "caption": "pic4" },
-            { "src": "/Resources/pic1.jpg", "caption": "pic1" },
-            { "src": "/Resources/pic2.jpg", "caption": "pic2" }]
+                    { "src": "/Resources/pic2.jpg", "caption": "pic2" },
+                    { "src": "/Resources/pic3.jpg", "caption": "pic3" },
+                    { "src": "/Resources/pic4.jpg", "caption": "pic4" },
+                    { "src": "/Resources/pic1.jpg", "caption": "pic1" },
+                    { "src": "/Resources/pic2.jpg", "caption": "pic2" }];
 
 
 
-        for (var i = 0; i < _pics.length; i++) {
-            if (DEBUG) {
-                console.log("1st loop _top=" + _top + ", _left=" + _left + ", _pic[i].src=" + _pics[i].src);
+        function picPopulate() {
+
+            for (var i = 0; i < _picsAcross; i++) {
+                if (DEBUG) {
+                    console.log("1st loop _top=" + _top + ", _left=" + _left + ", _pic[i].src=" + _pics[i].src);
+                }
+                create_img("allin", _pics[i].src, _beforeSize, _beforeSize, _growBy, _top, _left, pxConvert, false);
+                _left += _beforeSize;
+
             }
-            create_img("allin", _pics[i].src, _beforeSize, _beforeSize, _growBy, _top, _left, emConvert, false);
-            _left += _beforeSize;
+        };
 
+        function init() {
+            document.getElementById("allin").innerHTML = "";
+            _beforeSize = 240, _growBy = 48, _top = 30, _left = 30;
         }
+
+        init();
+        calcDims();
+        picPopulate();
+
+
+
     })();
 
 
