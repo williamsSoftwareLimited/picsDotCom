@@ -1,23 +1,33 @@
+@{
+    ViewBag.Title = "Home Page";
+}
+
 <div id="allin" style="position:absolute; top:0px; left:0px; margin:0px; padding:0px;"></div>
 
+<div>
+    <img src="~/Resources/pic1.jpg" class="magicPics" />
+</div>
 
 <script>
     (function () {
 
         var DEBUG = true;
 
-        function create_img(root, img_src, beforeWidth, beforeHeight, growBy, beforeTop, beforeLeft, _debug) {
+        // used for DI(ing) the dimension converter into create_img
+        var emConvert = function (n) {
+            if (n) return n.toString() + "em";
+        }
+        var pxConvert = function (n) {
+            if (n) return n.toString() + "px";
+        }
 
-            var pxConvert = function (n) {
-                if (n) return n.toString() + "px";
-            }
+        function create_img(root, img_src, beforeWidth, beforeHeight, growBy, beforeTop, beforeLeft, dimConverter, _debug) {            
 
-            var cx_o_dim = function (o, width, height, top, left, zIndex) {
-                
-                o.style.height = pxConvert(height);
-                o.style.width = pxConvert(width);
-                o.style.top = pxConvert(top);
-                o.style.left = pxConvert(left);
+            var cx_o_dim = function (o, width, height, top, left, zIndex) {                
+                o.style.height = dimConverter(height);
+                o.style.width = dimConverter(width);
+                o.style.top = dimConverter(top);
+                o.style.left = dimConverter(left);
                 o.style.zIndex = zIndex.toString();
 
                 if (_debug) {
@@ -49,7 +59,6 @@
             }
 
             allin.appendChild(img);
-            //var self = this;
 
             img.onmouseover = function () {
                 if (_debug) {
@@ -66,14 +75,21 @@
 
         }
 
-        
-
-        var _beforeSize = 200, _growBy = 40, _top = 22, _left = 22;
-
-        // should receive a JSON list of the pics to be displayed after we've worked out the screen size
-        // note if the screen gets bigger then we'll have to get more pics
         var _screenWidth = window.outerWidth,
             _screenHeight = window.outerHeight;
+
+        
+       
+        var
+             //  _beforeSize = 200, _growBy = 40, _top = 22, _left = 22, //px
+            _beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
+            _picsAcross = 8, _picsDown = 6; // thats 24 pics in total 
+
+       
+        function calcDims(width, height, picWidth) { // these are the window dims
+            // ideally would like to fit at least 4 pics across the window
+
+        }
 
         document.body.onresize = function (evt) {
             _screenWidth = window.outerWidth;
@@ -88,6 +104,8 @@
             console.log("width=" + _screenWidth + " and height=" + _screenHeight);
         }
 
+         // should receive a JSON list of the pics to be displayed after we've worked out the screen size
+        // note if the screen gets bigger then we'll have to get more pics
         var _pics = [{ "src": "/Resources/pic1.jpg", "caption": "pic1" },
             { "src": "/Resources/pic2.jpg", "caption": "pic2" },
             { "src": "/Resources/pic3.jpg", "caption": "pic3" },
@@ -101,7 +119,7 @@
             if (DEBUG) {
                 console.log("1st loop _top=" + _top + ", _left=" + _left + ", _pic[i].src=" + _pics[i].src);
             }
-            create_img("allin", _pics[i].src, _beforeSize, _beforeSize, _growBy, _top, _left, false);
+            create_img("allin", _pics[i].src, _beforeSize, _beforeSize, _growBy, _top, _left, emConvert, false);
             _left += _beforeSize;
 
         }
