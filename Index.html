@@ -16,9 +16,11 @@
 
 
         var LEFT_START_POS = 30,
+            MAX_PICS_DOWN = 12,
+            PICS_DOWN_ADDITIONAL = 2,
             _beforeSize = 240, _growBy = 48, _top = 30, _left = LEFT_START_POS, //px
             //_beforeSize = 16, _growBy = 2, _top = 1.1, _left = 1.1, //em
-            _picsAcross = 4, _picsDown = 6; // thats 24 pics in total 
+            _picsAcross = 4, _picsDown = MAX_PICS_DOWN; 
 
         // used for DI(ing) the dimension converter into create_img
         var emConvert = function (n) {
@@ -89,13 +91,16 @@
             // NB remember to cater for a border and the left pic doesn't expand correctly if - 
             //     when expanded it's left and/or top becomes 0 (zero)
             _picsAcross = parseInt((_screenWidth - 2 * LEFT_START_POS) / _beforeSize);
+            _picsDown = parseInt((_screenHeight - 2 * LEFT_START_POS) / _beforeSize) + PICS_DOWN_ADDITIONAL;
 
             if (_picsAcross === 0) _picsAcross = 1;
+            if (_picsDown > MAX_PICS_DOWN) _picsDown = MAX_PICS_DOWN;
 
             _beforeSize = parseInt((_screenWidth - 2 * LEFT_START_POS) / _picsAcross);
 
             if (DEBUG) {
                 console.log("_picsAcross is " + _picsAcross);
+                console.log("_picsDown is " + _picsDown);
             }
 
         }
@@ -116,6 +121,18 @@
          // should receive a JSON list of the pics to be displayed after we've worked out the screen size
         // note if the screen gets bigger then we'll have to get more pics
         var _pics = [{ "src": "/Resources/pic1.jpg", "caption": "pic1" },
+                    { "src": "/Resources/pic2.jpg", "caption": "pic2" },
+                    { "src": "/Resources/pic3.jpg", "caption": "pic3" },
+                    { "src": "/Resources/pic4.jpg", "caption": "pic4" },
+                    { "src": "/Resources/pic1.jpg", "caption": "pic1" },
+                    { "src": "/Resources/pic2.jpg", "caption": "pic2" },
+                    { "src": "/Resources/pic1.jpg", "caption": "pic1" },
+                    { "src": "/Resources/pic2.jpg", "caption": "pic2" },
+                    { "src": "/Resources/pic3.jpg", "caption": "pic3" },
+                    { "src": "/Resources/pic4.jpg", "caption": "pic4" },
+                    { "src": "/Resources/pic1.jpg", "caption": "pic1" },
+                    { "src": "/Resources/pic2.jpg", "caption": "pic2" },
+                    { "src": "/Resources/pic1.jpg", "caption": "pic1" },
                     { "src": "/Resources/pic2.jpg", "caption": "pic2" },
                     { "src": "/Resources/pic3.jpg", "caption": "pic3" },
                     { "src": "/Resources/pic4.jpg", "caption": "pic4" },
