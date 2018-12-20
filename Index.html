@@ -158,6 +158,10 @@
                     picIndex += 1;
 
                 }
+
+                // if not enough images to entirly across the screen then bail
+                if (_pics.length - (j+1) * _picsAcross < _picsAcross) break;
+
                 _left = LEFT_START_POS;
                 _top += _beforeSize;
             }
